@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Transfer Patient - BedStats</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #123b5d;
+            --navy-dark: #0b2942;
+            --navy-light: #1d557d;
+
+            --teal: #0f766e;
+            --teal-dark: #0b5d57;
+            --teal-light: #e7f6f4;
+
+            --background: #f4f7fa;
+            --card: #ffffff;
+
+            --text: #243447;
+            --muted: #6b7c8f;
+            --border: #dce5ec;
+
+            --success: #198754;
+            --success-light: #e8f6ee;
+
+            --warning: #c98a00;
+            --warning-light: #fff5d9;
+
+            --danger: #c0392b;
+            --danger-light: #fdecea;
+
+            --info: #2878a8;
+            --info-light: #eaf4fa;
+
+            --neutral: #59636e;
+            --neutral-light: #eef1f4;
+
+            --shadow: 0 6px 20px rgba(18, 59, 93, 0.08);
+            --shadow-hover: 0 10px 28px rgba(18, 59, 93, 0.14);
+
+            --radius: 12px;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                var(--navy-dark),
+                var(--navy),
+                var(--navy-light)
+            );
+
+            color: white;
+            padding: 24px 30px;
+            border-bottom: 4px solid var(--teal);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--teal);
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+            font-size: 18px;
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 0.2px;
+        }
+
+        header p {
+            margin: 3px 0 0;
+            font-size: 14px;
+            color: #dbe8f2;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        nav {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(18, 59, 93, 0.04);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 10px 20px;
+
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 7px;
+        }
+
+        nav a,
+        nav button {
+            text-decoration: none;
+            color: var(--navy);
+            background: transparent;
+            border: none;
+
+            padding: 9px 13px;
+            border-radius: 7px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        nav a:hover {
+            background: var(--teal-light);
+            color: var(--teal-dark);
+        }
+
+        nav a.active {
+            background: var(--navy);
+            color: white;
+        }
+
+        .logout-form {
+            margin-left: auto;
+        }
+
+        .logout-button {
+            background: var(--danger) !important;
+            color: white !important;
+        }
+
+        .logout-button:hover {
+            background: #a93226 !important;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* ================= USER INFORMATION ================= */
+
+        .user-info {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            padding: 12px 16px;
+            margin-bottom: 20px;
+
+            color: var(--muted);
+            font-size: 14px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .user-info strong {
+            color: var(--navy);
+        }
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+
+            padding: 30px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+
+            border-bottom: 2px solid #edf1f4;
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+
+            background: var(--teal-light);
+            color: var(--teal-dark);
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 23px;
+        }
+
+        .card-header p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* ================= NOTICE ================= */
+
+        .notice {
+            background: var(--info-light);
+            border: 1px solid #cce3ef;
+            border-left: 5px solid var(--info);
+
+            padding: 14px 16px;
+            border-radius: 8px;
+
+            margin-bottom: 24px;
+
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .notice strong {
+            color: var(--info);
+        }
+
+        /* ================= ERROR ================= */
+
+        .error {
+            background: var(--danger-light);
+            border: 1px solid #f1c5c0;
+            border-left: 5px solid var(--danger);
+
+            color: #8f2d23;
+
+            padding: 14px 16px;
+            border-radius: 8px;
+
+            margin-bottom: 22px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ================= FORM ================= */
+
+        form.transfer-form {
+            width: 100%;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            margin-bottom: 7px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+
+            color: var(--text);
+            background: #fbfcfd;
+
+            outline: none;
+
+            transition: 0.2s ease;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            border-color: var(--teal);
+
+            box-shadow:
+                0 0 0 3px rgba(15, 118, 110, 0.10);
+
+            background: white;
+        }
+
+        textarea {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .field-help {
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ================= FORM ACTIONS ================= */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-top: 28px;
+            padding-top: 22px;
+
+            border-top: 1px solid var(--border);
+        }
+
+        .submit-button {
+            background: var(--teal);
+            color: white;
+
+            border: none;
+            padding: 12px 22px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(15,118,110,0.20);
+        }
+
+        .cancel {
+            display: inline-block;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            color: var(--neutral);
+            background: var(--neutral-light);
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .cancel:hover {
+            background: #dfe4e8;
+            color: var(--text);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px 20px;
+
+            margin-top: 30px;
+
+            background: white;
+            border-top: 1px solid var(--border);
+
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 23px;
+            }
+
+            .brand-icon {
+                width: 42px;
+                height: 42px;
+            }
+
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .card-header h2 {
+                font-size: 20px;
+            }
+
+            .logout-form {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .logout-button {
+                width: 100%;
+            }
+
+            nav a {
+                flex: 1 1 auto;
+                text-align: center;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .submit-button,
+            .cancel {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .card {
+                padding: 17px;
+            }
+
+            .card-header {
+                align-items: flex-start;
+            }
+
+            .card-icon {
+                flex-shrink: 0;
+            }
+
+            .card-header h2 {
+                font-size: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="header-content">
+
+        <div class="brand-row">
+
+            <div class="brand-icon">
+                BS
+            </div>
+
+            <div>
+
+                <h1>
+                    BedStats Hospital
+                </h1>
+
+                <p>
+                    Hospital Bed Management and Statistics System
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+
+    <div class="nav-container">
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'bed_list' %}">
+            Beds
+        </a>
+
+        <a href="{% url 'patient_list' %}">
+            Patients
+        </a>
+
+        <a href="{% url 'admission_create' %}">
+            Admission
+        </a>
+
+        <a href="{% url 'discharge_create' %}">
+            Discharge
+        </a>
+
+        <a href="{% url 'transfer_create' %}"
+           class="active">
+            Transfer
+        </a>
+
+        <a href="{% url 'reports' %}">
+            Reports
+        </a>
+
+        <form method="post"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+
+    <!-- USER INFORMATION -->
+
+    <div class="user-info">
+
+        Logged in as:
+
+        <strong>
+            {{ request.user.username }}
+        </strong>
+
+        {% for group in request.user.groups.all %}
+
+            &nbsp; | &nbsp;
+
+            Role:
+
+            <strong>
+                {{ group.name }}
+            </strong>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- TRANSFER CARD -->
+
+    <div class="card">
+
+
+        <div class="card-header">
+
+            <div class="card-icon">
+                ⇄
+            </div>
+
+            <div>
+
+                <h2>
+                    Transfer Patient
+                </h2>
+
+                <p>
+                    Move an admitted patient from their current bed to another available bed.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- INFORMATION NOTICE -->
+
+        <div class="notice">
+
+            <strong>Transfer Information:</strong>
+
+            Select the patient's current admission and then select
+            an available destination bed. The transfer will update
+            the patient's current bed and ward.
+
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- TRANSFER FORM -->
+
+        <form method="post"
+              class="transfer-form">
+
+            {% csrf_token %}
+
+
+            <!-- PATIENT / CURRENT BED -->
+
+            <div class="form-group">
+
+                <label for="admission">
+
+                    Patient / Current Bed
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <select id="admission"
+                        name="admission"
+                        required>
+
+                    <option value="">
+                        Select Patient
+                    </option>
+
+                    {% for admission in admissions %}
+
+                        <option value="{{ admission.id }}">
+
+                            {{ admission.patient.patient_number }}
+
+                            -
+
+                            {{ admission.patient.first_name }}
+
+                            {{ admission.patient.last_name }}
+
+                            -
+
+                            Current Bed:
+
+                            {{ admission.bed.bed_number }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <div class="field-help">
+
+                    Select the currently admitted patient to be transferred.
+
+                </div>
+
+            </div>
+
+
+            <!-- NEW BED -->
+
+            <div class="form-group">
+
+                <label for="to_bed">
+
+                    New Bed
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <select id="to_bed"
+                        name="to_bed"
+                        required>
+
+                    <option value="">
+                        Select New Available Bed
+                    </option>
+
+                    {% for bed in beds %}
+
+                        <option value="{{ bed.id }}">
+
+                            {{ bed.bed_number }}
+
+                            -
+
+                            {{ bed.ward.name }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <div class="field-help">
+
+                    Only select a bed that is available for the transfer.
+
+                </div>
+
+            </div>
+
+
+            <!-- TRANSFER DATE -->
+
+            <div class="form-group">
+
+                <label for="transfer_date">
+
+                    Transfer Date
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <input type="date"
+                       id="transfer_date"
+                       name="transfer_date"
+                       required>
+
+            </div>
+
+
+            <!-- REASON -->
+
+            <div class="form-group">
+
+                <label for="reason">
+
+                    Reason for Transfer
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <textarea id="reason"
+                          name="reason"
+                          placeholder="Enter reason for transfer"
+                          required></textarea>
+
+            </div>
+
+
+            <!-- REMARKS -->
+
+            <div class="form-group">
+
+                <label for="remarks">
+                    Remarks
+                </label>
+
+                <textarea id="remarks"
+                          name="remarks"
+                          placeholder="Enter additional remarks"></textarea>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="submit-button">
+
+                    Transfer Patient
+
+                </button>
+
+                <a href="{% url 'dashboard' %}"
+                   class="cancel">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    BedStats Hospital Bed Management System
+
+</footer>
+
+
+</body>
+
+</html>

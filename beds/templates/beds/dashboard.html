@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BedStats Dashboard</title>
+
+    <style>
+        /* =========================================================
+           BEDSTATS PROFESSIONAL THEME
+           ========================================================= */
+
+        :root {
+            --navy: #123b5d;
+            --navy-dark: #0b2942;
+            --navy-light: #1d557d;
+
+            --teal: #0f766e;
+            --teal-dark: #0b5d57;
+            --teal-light: #e7f6f4;
+
+            --background: #f4f7fa;
+            --card: #ffffff;
+
+            --text: #243447;
+            --muted: #6b7c8f;
+
+            --border: #dce5ec;
+
+            --success: #198754;
+            --success-light: #e8f6ee;
+
+            --warning: #c98a00;
+            --warning-light: #fff5d9;
+
+            --danger: #c0392b;
+            --danger-light: #fdecea;
+
+            --info: #2878a8;
+            --info-light: #eaf4fa;
+
+            --shadow: 0 6px 20px rgba(18, 59, 93, 0.08);
+            --shadow-hover: 0 10px 28px rgba(18, 59, 93, 0.14);
+
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           HEADER
+           ========================================================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                var(--navy-dark),
+                var(--navy)
+            );
+            color: white;
+            padding: 24px 30px;
+            border-bottom: 4px solid var(--teal);
+        }
+
+        .header-container {
+            max-width: 1450px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .logo p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        /* =========================================================
+           USER INFORMATION
+           ========================================================= */
+
+        .user-bar {
+            max-width: 1450px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .user-info {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 9px 15px;
+            color: var(--muted);
+            font-size: 13px;
+            box-shadow: 0 2px 8px rgba(18, 59, 93, 0.05);
+        }
+
+        .user-info strong {
+            color: var(--navy);
+        }
+
+        /* =========================================================
+           NAVIGATION
+           ========================================================= */
+
+        nav {
+            background: var(--navy-dark);
+            padding: 10px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1450px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.88);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background: var(--teal);
+            color: white;
+        }
+
+        nav a:first-child {
+            background: rgba(15, 118, 110, 0.25);
+            color: white;
+        }
+
+        .logout-button {
+            background: var(--danger);
+            color: white;
+            padding: 9px 16px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background: #a93226;
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           MAIN CONTENT
+           ========================================================= */
+
+        main {
+            max-width: 1450px;
+            margin: 30px auto 50px;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 28px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           STATISTICS CARDS
+           ========================================================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            position: relative;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            min-height: 135px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: var(--navy);
+        }
+
+        .card:nth-child(2)::before {
+            background: var(--danger);
+        }
+
+        .card:nth-child(3)::before {
+            background: var(--success);
+        }
+
+        .card:nth-child(4)::before {
+            background: var(--teal);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--teal-light);
+            color: var(--teal);
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .card:nth-child(2) .card-icon {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .card:nth-child(3) .card-icon {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .card:nth-child(4) .card-icon {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-top: 15px;
+            line-height: 1;
+        }
+
+        /* =========================================================
+           SECTIONS
+           ========================================================= */
+
+        .section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           PATIENT MOVEMENT
+           ========================================================= */
+
+        .movement-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .movement {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fbfcfd;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .movement:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(18, 59, 93, 0.08);
+        }
+
+        .movement-icon {
+            width: 42px;
+            height: 42px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .movement:nth-child(1) .movement-icon {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .movement:nth-child(2) .movement-icon {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .movement:nth-child(3) .movement-icon {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .movement:nth-child(4) .movement-icon {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .movement h3 {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .movement .number {
+            font-size: 29px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-top: 8px;
+        }
+
+        /* =========================================================
+           QUICK ACTIONS
+           ========================================================= */
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 54px;
+            background: var(--navy);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 13px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .action:hover {
+            background: var(--teal);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(15, 118, 110, 0.2);
+        }
+
+        /* =========================================================
+           TABLE
+           ========================================================= */
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            min-width: 700px;
+        }
+
+        th {
+            background: var(--navy);
+            color: white;
+            padding: 14px 15px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text);
+            background: white;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover td {
+            background: #f7fafc;
+        }
+
+        /* =========================================================
+           STATUS BADGES
+           ========================================================= */
+
+        .status {
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            letter-spacing: 0.2px;
+        }
+
+        .available {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .occupied {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        /* =========================================================
+           PROGRESS BAR
+           ========================================================= */
+
+        .occupancy-wrapper {
+            min-width: 150px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e9eef3;
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 7px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                var(--teal),
+                var(--navy)
+            );
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .rate {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           EMPTY TABLE
+           ========================================================= */
+
+        .empty-message {
+            text-align: center;
+            padding: 30px !important;
+            color: var(--muted);
+        }
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        footer {
+            background: var(--navy-dark);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            font-size: 12px;
+            border-top: 3px solid var(--teal);
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        footer p:first-child {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 1100px) {
+
+            .cards,
+            .movement-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header-container,
+            .nav-container,
+            main {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 20px;
+            }
+
+            .logo h1 {
+                font-size: 26px;
+            }
+
+            .logo p {
+                font-size: 12px;
+            }
+
+            .user-bar {
+                justify-content: flex-start;
+                padding: 10px 15px;
+            }
+
+            nav {
+                padding: 10px 12px;
+            }
+
+            .nav-container {
+                gap: 5px;
+            }
+
+            nav a,
+            .logout-button {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            main {
+                margin-top: 25px;
+                padding: 0 12px;
+            }
+
+            .page-title h2 {
+                font-size: 24px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .cards,
+            .movement-cards,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                min-height: 125px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .section h2 {
+                font-size: 18px;
+            }
+
+            .user-info {
+                font-size: 12px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header>
+    <div class="header-container">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                BS
+            </div>
+
+            <div>
+                <h1>BedStats</h1>
+
+                <p>
+                    Hospital Bed Management &amp; Statistics System
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+
+<!-- =========================================================
+     LOGGED-IN USER
+     ========================================================= -->
+
+<div class="user-bar">
+
+    <div class="user-info">
+
+        Logged in as:
+        <strong>{{ request.user.username }}</strong>
+
+        {% if request.user.groups.all %}
+
+            {% for group in request.user.groups.all %}
+
+                &nbsp; | &nbsp;
+                Role:
+                <strong>{{ group.name }}</strong>
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+
+<nav>
+
+    <div class="nav-container">
+
+        <!-- Available to everyone -->
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'bed_list' %}">
+            Beds
+        </a>
+
+        <a href="{% url 'patient_list' %}">
+            Patients
+        </a>
+
+
+        <!-- Patient registration -->
+        {% if is_admin or is_hio or is_records %}
+
+            <a href="{% url 'register_patient' %}">
+                Register Patient
+            </a>
+
+        {% endif %}
+
+
+        <!-- Admissions -->
+        {% if is_admin or is_hio or is_nurse or is_records or is_doctor %}
+
+            <a href="{% url 'admission_create' %}">
+                Admission
+            </a>
+
+        {% endif %}
+
+
+        <!-- Discharges -->
+        {% if is_admin or is_hio or is_nurse or is_records %}
+
+            <a href="{% url 'discharge_create' %}">
+                Discharge
+            </a>
+
+        {% endif %}
+
+
+        <!-- Transfers -->
+        {% if is_admin or is_hio or is_nurse or is_records %}
+
+            <a href="{% url 'transfer_create' %}">
+                Transfer
+            </a>
+
+        {% endif %}
+
+
+        <!-- Reports -->
+        <a href="{% url 'reports' %}">
+            Reports
+        </a>
+
+
+        <!-- Patient Movement -->
+        <a href="{% url 'patient_movement' %}">
+            Patient Movement
+        </a>
+
+
+        <!-- Administration -->
+        {% if is_admin %}
+
+            <a href="/admin/">
+                Administration
+            </a>
+
+        {% endif %}
+
+
+        <!-- Logout -->
+        <form method="post"
+              action="{% url 'logout' %}"
+              style="display:inline;">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<main>
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <h2>
+            Hospital Bed Dashboard
+        </h2>
+
+        <p>
+            Overview of hospital bed availability, occupancy and patient movement.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN STATISTICS
+         ===================================================== -->
+
+    <div class="cards">
+
+
+        <!-- TOTAL BEDS -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3>
+                    Total Beds
+                </h3>
+
+                <div class="card-icon">
+                    TB
+                </div>
+
+            </div>
+
+            <div class="number">
+                {{ total_beds }}
+            </div>
+
+        </div>
+
+
+        <!-- OCCUPIED -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3>
+                    Occupied Beds
+                </h3>
+
+                <div class="card-icon">
+                    OB
+                </div>
+
+            </div>
+
+            <div class="number">
+                {{ occupied_beds }}
+            </div>
+
+        </div>
+
+
+        <!-- AVAILABLE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3>
+                    Available Beds
+                </h3>
+
+                <div class="card-icon">
+                    AB
+                </div>
+
+            </div>
+
+            <div class="number">
+                {{ available_beds }}
+            </div>
+
+        </div>
+
+
+        <!-- OCCUPANCY RATE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3>
+                    Occupancy Rate
+                </h3>
+
+                <div class="card-icon">
+                    %
+                </div>
+
+            </div>
+
+            <div class="number">
+                {{ occupancy_rate }}%
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TODAY'S PATIENT MOVEMENT
+         ===================================================== -->
+
+    <div class="section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Today's Patient Movement
+                </h2>
+
+                <p class="section-subtitle">
+                    Patient activity recorded for today
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="movement-cards">
+
+
+            <!-- ADMISSIONS -->
+
+            <div class="movement">
+
+                <div class="movement-icon">
+                    IN
+                </div>
+
+                <h3>
+                    Admissions
+                </h3>
+
+                <div class="number">
+                    {{ admissions_today }}
+                </div>
+
+            </div>
+
+
+            <!-- DISCHARGES -->
+
+            <div class="movement">
+
+                <div class="movement-icon">
+                    OUT
+                </div>
+
+                <h3>
+                    Discharges
+                </h3>
+
+                <div class="number">
+                    {{ discharges_today }}
+                </div>
+
+            </div>
+
+
+            <!-- TRANSFERS -->
+
+            <div class="movement">
+
+                <div class="movement-icon">
+                    TR
+                </div>
+
+                <h3>
+                    Transfers
+                </h3>
+
+                <div class="number">
+                    {{ transfers_today }}
+                </div>
+
+            </div>
+
+
+            <!-- DEATHS -->
+
+            <div class="movement">
+
+                <div class="movement-icon">
+                    DT
+                </div>
+
+                <h3>
+                    Deaths
+                </h3>
+
+                <div class="number">
+                    {{ deaths_today }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUICK ACTIONS
+         ===================================================== -->
+
+    <div class="section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <p class="section-subtitle">
+                    Frequently used hospital bed management functions
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+
+            {% if is_admin or is_hio or is_records %}
+
+                <a class="action"
+                   href="{% url 'register_patient' %}">
+                    Register Patient
+                </a>
+
+            {% endif %}
+
+
+            {% if is_admin or is_hio or is_nurse or is_records or is_doctor %}
+
+                <a class="action"
+                   href="{% url 'admission_create' %}">
+                    New Admission
+                </a>
+
+            {% endif %}
+
+
+            {% if is_admin or is_hio or is_nurse or is_records %}
+
+                <a class="action"
+                   href="{% url 'discharge_create' %}">
+                    Discharge Patient
+                </a>
+
+                <a class="action"
+                   href="{% url 'transfer_create' %}">
+                    Transfer Patient
+                </a>
+
+            {% endif %}
+
+
+            {% if is_admin or is_hio or is_records %}
+
+                <a class="action"
+                   href="{% url 'death_create' %}">
+                    Record Death
+                </a>
+
+            {% endif %}
+
+
+            <a class="action"
+               href="{% url 'bed_list' %}">
+                View Beds
+            </a>
+
+
+            <a class="action"
+               href="{% url 'patient_list' %}">
+                View Patients
+            </a>
+
+
+            <a class="action"
+               href="{% url 'reports' %}">
+                View Reports
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         WARD OCCUPANCY
+         ===================================================== -->
+
+    <div class="section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Ward Occupancy
+                </h2>
+
+                <p class="section-subtitle">
+                    Current bed occupancy by hospital ward
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Ward
+                        </th>
+
+                        <th>
+                            Total Beds
+                        </th>
+
+                        <th>
+                            Occupied
+                        </th>
+
+                        <th>
+                            Available
+                        </th>
+
+                        <th>
+                            Occupancy Rate
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for ward in ward_data %}
+
+                    <tr>
+
+
+                        <!-- WARD NAME -->
+
+                        <td>
+
+                            <strong>
+                                {{ ward.name }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- TOTAL -->
+
+                        <td>
+                            {{ ward.total }}
+                        </td>
+
+
+                        <!-- OCCUPIED -->
+
+                        <td>
+
+                            <span class="status occupied">
+                                {{ ward.occupied }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- AVAILABLE -->
+
+                        <td>
+
+                            <span class="status available">
+                                {{ ward.available }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- OCCUPANCY RATE -->
+
+                        <td>
+
+                            <div class="occupancy-wrapper">
+
+                                <span class="rate">
+                                    {{ ward.rate }}%
+                                </span>
+
+                                <div class="progress-container">
+
+                                    <div
+                                        class="progress-bar"
+                                        style="width: {{ ward.rate }}%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5"
+                            class="empty-message">
+
+                            No ward information available.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer>
+
+    <p>
+        BedStats Hospital Bed Management System
+    </p>
+
+    <p>
+        Hospital Bed Statistics &amp; Patient Movement
+    </p>
+
+</footer>
+
+
+</body>
+</html>

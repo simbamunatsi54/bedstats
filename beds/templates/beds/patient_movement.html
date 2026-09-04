@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Movement - BedStats</title>
+
+    <style>
+        :root {
+            --navy: #123b5d;
+            --navy-dark: #0b2942;
+            --navy-light: #1d557d;
+            --teal: #0f766e;
+            --teal-dark: #0b5d57;
+            --teal-light: #e7f6f4;
+
+            --background: #f4f7fa;
+            --card: #ffffff;
+            --text: #243447;
+            --muted: #6b7c8f;
+            --border: #dce5ec;
+
+            --success: #198754;
+            --success-light: #e8f6ee;
+
+            --warning: #c98a00;
+            --warning-light: #fff5d9;
+
+            --danger: #c0392b;
+            --danger-light: #fdecea;
+
+            --info: #2878a8;
+            --info-light: #eaf4fa;
+
+            --neutral: #59636e;
+            --neutral-light: #eef1f4;
+
+            --shadow: 0 6px 20px rgba(18, 59, 93, 0.08);
+            --shadow-hover: 0 10px 28px rgba(18, 59, 93, 0.14);
+
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                var(--navy-dark),
+                var(--navy),
+                var(--navy-light)
+            );
+            color: white;
+            padding: 22px 35px;
+            border-bottom: 4px solid var(--teal);
+        }
+
+        .header-content {
+            max-width: 1550px;
+            margin: auto;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            background: var(--teal);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 0.3px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 3px 12px rgba(18, 59, 93, 0.06);
+        }
+
+        .nav-container {
+            max-width: 1550px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 11px 25px;
+        }
+
+        .nav-container a {
+            text-decoration: none;
+            color: var(--text);
+            padding: 9px 13px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .nav-container a:hover {
+            background: var(--teal-light);
+            color: var(--teal-dark);
+        }
+
+        .nav-container a.active {
+            background: var(--teal);
+            color: white;
+        }
+
+        .logout-form {
+            display: inline;
+            margin-left: auto;
+        }
+
+        .logout-button {
+            background: var(--danger);
+            color: white;
+            padding: 9px 15px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background: #a93226;
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           USER INFORMATION
+        ========================= */
+
+        .user-info {
+            max-width: 1550px;
+            margin: auto;
+            padding: 10px 30px;
+            background: var(--background);
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .user-info strong {
+            color: var(--navy);
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 94%;
+            max-width: 1550px;
+            margin: 28px auto 40px;
+        }
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title {
+            background: var(--card);
+            padding: 24px 26px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--teal);
+            margin-bottom: 22px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 25px;
+        }
+
+        .page-title p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FILTER BOX
+        ========================= */
+
+        .filter-box {
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+
+        .filter-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--teal-light);
+            color: var(--teal-dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .filter-box h3 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 17px;
+        }
+
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            flex: 1;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--text);
+            margin-bottom: 7px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            font-size: 13px;
+            color: var(--text);
+            background: #fbfcfd;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.10);
+            background: white;
+        }
+
+        .search-button {
+            background: var(--teal);
+            color: white;
+            border: none;
+            padding: 11px 22px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: 0.2s ease;
+        }
+
+        .search-button:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+        }
+
+        .clear-button {
+            background: var(--neutral);
+            color: white;
+            text-decoration: none;
+            padding: 11px 22px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .clear-button:hover {
+            background: #454d55;
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary-box {
+            background: var(--teal-light);
+            padding: 18px 22px;
+            margin-bottom: 22px;
+            border-left: 5px solid var(--teal);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--teal-dark);
+        }
+
+        .summary-text {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            gap: 15px;
+        }
+
+        .table-container h3 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 18px;
+        }
+
+        .table-subtitle {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 1150px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+
+        thead {
+            background: var(--navy);
+            color: white;
+        }
+
+        th {
+            padding: 14px 11px;
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+            font-weight: 700;
+            border-bottom: 2px solid var(--teal);
+        }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        td {
+            padding: 13px 11px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            vertical-align: middle;
+            color: var(--text);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f7fbfc;
+        }
+
+        .patient-number {
+            display: inline-block;
+            background: var(--info-light);
+            color: var(--navy);
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .location-cell {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .details-cell {
+            max-width: 260px;
+            line-height: 1.45;
+        }
+
+        /* =========================
+           MOVEMENT BADGES
+        ========================= */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 11px;
+            border-radius: 20px;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .admission {
+            background: var(--success);
+        }
+
+        .transfer {
+            background: var(--info);
+        }
+
+        .discharge {
+            background: var(--neutral);
+        }
+
+        .death {
+            background: var(--danger);
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-message {
+            text-align: center;
+            padding: 60px 30px !important;
+            color: var(--muted);
+            background: #fbfcfd;
+        }
+
+        .empty-title {
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 35px;
+            padding: 22px;
+            text-align: center;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            header {
+                padding: 18px 20px;
+            }
+
+            .nav-container {
+                padding: 10px 15px;
+            }
+
+            .logout-form {
+                margin-left: 0;
+            }
+
+            .user-info {
+                padding: 10px 18px;
+            }
+
+            .container {
+                width: 96%;
+                margin-top: 20px;
+            }
+
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-group {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .search-button,
+            .clear-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .table-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .brand-row {
+                align-items: flex-start;
+            }
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            header h1 {
+                font-size: 23px;
+            }
+
+            header p {
+                font-size: 12px;
+            }
+
+            .nav-container {
+                gap: 4px;
+            }
+
+            .nav-container a {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .page-title,
+            .filter-box,
+            .table-container {
+                padding: 18px;
+            }
+
+            .page-title h2 {
+                font-size: 21px;
+            }
+
+            .summary-box {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+
+        <div class="brand-row">
+
+            <div class="brand-icon">
+                BS
+            </div>
+
+            <div>
+                <h1>BedStats</h1>
+
+                <p>
+                    Hospital Bed Management and Patient Statistics System
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+
+<nav>
+
+    <div class="nav-container">
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'bed_list' %}">
+            Beds
+        </a>
+
+        <a href="{% url 'patient_list' %}">
+            Patients
+        </a>
+
+        <a href="{% url 'patient_movement' %}" class="active">
+            Patient Movement
+        </a>
+
+        <a href="{% url 'reports' %}">
+            Reports
+        </a>
+
+        {% if request.user.is_superuser %}
+
+            <a href="/admin/">
+                Administration
+            </a>
+
+        {% endif %}
+
+        <form method="post"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<div class="user-info">
+
+    Logged in as:
+
+    <strong>
+        {{ request.user.username }}
+    </strong>
+
+    {% for group in request.user.groups.all %}
+
+        | Role:
+
+        <strong>
+            {{ group.name }}
+        </strong>
+
+    {% endfor %}
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <h2>
+            Patient Movement
+        </h2>
+
+        <p>
+            View all patient admissions, transfers,
+            discharges and deaths in one chronological record.
+        </p>
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="filter-box">
+
+        <div class="filter-header">
+
+            <div class="filter-icon">
+                🔎
+            </div>
+
+            <h3>
+                Search and Filter
+            </h3>
+
+        </div>
+
+
+        <form method="get"
+              action="{% url 'patient_movement' %}"
+              class="filter-form">
+
+
+            <div class="form-group">
+
+                <label for="search">
+                    Patient Search
+                </label>
+
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Patient number or name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="from_date">
+                    From Date
+                </label>
+
+                <input
+                    type="date"
+                    id="from_date"
+                    name="from_date"
+                    value="{{ from_date }}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="to_date">
+                    To Date
+                </label>
+
+                <input
+                    type="date"
+                    id="to_date"
+                    name="to_date"
+                    value="{{ to_date }}"
+                >
+
+            </div>
+
+
+            <button type="submit"
+                    class="search-button">
+
+                Search
+
+            </button>
+
+
+            <a href="{% url 'patient_movement' %}"
+               class="clear-button">
+
+                Clear
+
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary-box">
+
+        <span class="summary-number">
+            {{ movements|length }}
+        </span>
+
+        <span class="summary-text">
+            Total Patient Movement Records
+        </span>
+
+    </div>
+
+
+    <!-- SINGLE MOVEMENT TABLE -->
+
+    <div class="table-container">
+
+        <div class="table-header">
+
+            <div>
+                <h3>
+                    Patient Movement Summary
+                </h3>
+
+                <div class="table-subtitle">
+                    Admissions, transfers, discharges and deaths
+                </div>
+            </div>
+
+        </div>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Patient Number
+                    </th>
+
+                    <th>
+                        Patient Name
+                    </th>
+
+                    <th>
+                        Movement
+                    </th>
+
+                    <th>
+                        From Ward
+                    </th>
+
+                    <th>
+                        From Bed
+                    </th>
+
+                    <th>
+                        To Ward
+                    </th>
+
+                    <th>
+                        To Bed
+                    </th>
+
+                    <th>
+                        Reason / Details
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for movement in movements %}
+
+                <tr>
+
+                    <td class="date-cell">
+                        {{ movement.date|date:"d/m/Y H:i" }}
+                    </td>
+
+
+                    <td>
+
+                        <span class="patient-number">
+                            {{ movement.patient_number }}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            {{ movement.patient_name }}
+                        </strong>
+                    </td>
+
+
+                    <td>
+
+                        {% if movement.movement == "ADMISSION" %}
+
+                            <span class="status admission">
+                                ADMISSION
+                            </span>
+
+                        {% elif movement.movement == "TRANSFER" %}
+
+                            <span class="status transfer">
+                                TRANSFER
+                            </span>
+
+                        {% elif movement.movement == "DISCHARGE" %}
+
+                            <span class="status discharge">
+                                DISCHARGE
+                            </span>
+
+                        {% elif movement.movement == "DEATH" %}
+
+                            <span class="status death">
+                                DEATH
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td class="location-cell">
+                        {{ movement.from_ward }}
+                    </td>
+
+
+                    <td class="location-cell">
+                        {{ movement.from_bed }}
+                    </td>
+
+
+                    <td class="location-cell">
+                        {{ movement.to_ward }}
+                    </td>
+
+
+                    <td class="location-cell">
+                        {{ movement.to_bed }}
+                    </td>
+
+
+                    <td class="details-cell">
+                        {{ movement.details }}
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="9"
+                        class="empty-message">
+
+                        <span class="empty-title">
+                            No patient movement records found.
+                        </span>
+
+                        <br>
+                        <br>
+
+                        Try changing the patient search
+                        or date range.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    BedStats Hospital Bed Management System
+
+    <br>
+
+    Patient Movement and Health Information Management
+
+</footer>
+
+</body>
+
+</html>

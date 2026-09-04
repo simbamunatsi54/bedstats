@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BedStats</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #12355b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 400px;
+            max-width: 90%;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #12355b;
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .logo p {
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #12355b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d2947;
+        }
+
+        .error {
+            background: #ffe5e5;
+            color: #a00000;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="logo">
+        <h1>BedStats</h1>
+        <p>Hospital Bed Management System</p>
+    </div>
+
+    {% if form.errors %}
+        <div class="error">
+            Invalid username or password.
+        </div>
+    {% endif %}
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_username">
+                Username
+            </label>
+
+            <input type="text"
+                   name="username"
+                   id="id_username"
+                   placeholder="Enter username"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">
+                Password
+            </label>
+
+            <input type="password"
+                   name="password"
+                   id="id_password"
+                   placeholder="Enter password"
+                   required>
+        </div>
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <div class="footer">
+        BedStats Hospital Information System
+    </div>
+
+</div>
+
+</body>
+</html>

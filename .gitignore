@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Django database
+db.sqlite3
+*.sqlite3
+
+# Environment variables
+.env
+.env.*
+
+# PyCharm
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Generated static files
+staticfiles/
+
+# User uploaded media
+media/

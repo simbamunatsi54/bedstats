@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discharge Patient - BedStats</title>
+
+    <style>
+        :root {
+            --navy: #123b5d;
+            --navy-dark: #0b2942;
+            --navy-light: #1d557d;
+            --teal: #0f766e;
+            --teal-dark: #0b5d57;
+            --teal-light: #e7f6f4;
+            --background: #f4f7fa;
+            --card: #ffffff;
+            --text: #243447;
+            --muted: #6b7c8f;
+            --border: #dce5ec;
+            --success: #198754;
+            --warning: #c98a00;
+            --warning-light: #fff5d9;
+            --danger: #c0392b;
+            --danger-light: #fdecea;
+            --info: #2878a8;
+            --info-light: #eaf4fa;
+            --shadow: 0 6px 20px rgba(18, 59, 93, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(
+                135deg,
+                var(--navy-dark),
+                var(--navy),
+                var(--navy-light)
+            );
+            color: white;
+            padding: 20px 40px 0;
+            border-bottom: 4px solid var(--teal);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--teal);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 17px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 25px;
+            letter-spacing: 0.3px;
+        }
+
+        .brand p {
+            margin: 3px 0 0;
+            color: #cbd9e5;
+            font-size: 12px;
+        }
+
+        /* NAVIGATION */
+        nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding-bottom: 14px;
+        }
+
+        nav a {
+            color: #e8f0f5;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        nav a.active {
+            background: var(--teal);
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-form {
+            display: inline;
+            margin-left: 5px;
+        }
+
+        .logout-button {
+            background: var(--danger);
+            color: white;
+            padding: 9px 15px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background: #a93226;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            margin-bottom: 20px;
+        }
+
+        .page-heading h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 28px;
+        }
+
+        .page-heading p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(
+                135deg,
+                #f8fbfd,
+                #eef6f8
+            );
+            padding: 22px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: var(--teal-light);
+            color: var(--teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 18px;
+        }
+
+        .card-header p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* ERROR */
+        .error {
+            background: var(--danger-light);
+            color: #9f2d21;
+            border: 1px solid #f2c4bf;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* NOTICE */
+        .notice {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            background: var(--info-light);
+            border: 1px solid #c8e0ed;
+            color: #245b78;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .notice-icon {
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* FORM */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 22px;
+        }
+
+        label {
+            color: var(--text);
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text);
+            background: white;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        select:hover,
+        input:hover,
+        textarea:hover {
+            border-color: #b9cbd8;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.10);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+        }
+
+        .form-help {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* ACTIONS */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .submit-button {
+            background: var(--teal);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(15, 118, 110, 0.18);
+        }
+
+        .cancel {
+            display: inline-block;
+            padding: 11px 20px;
+            text-decoration: none;
+            color: var(--navy);
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .cancel:hover {
+            background: #f4f7fa;
+            border-color: #bdcbd5;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 25px 20px 30px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 800px) {
+            header {
+                padding: 18px 20px 0;
+            }
+
+            nav {
+                gap: 3px;
+            }
+
+            nav a {
+                font-size: 12px;
+                padding: 8px 9px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .brand h1 {
+                font-size: 21px;
+            }
+
+            .brand p {
+                display: none;
+            }
+
+            .page-heading h2 {
+                font-size: 23px;
+            }
+
+            .card-body {
+                padding: 22px 18px;
+            }
+
+            .card-header {
+                padding: 18px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .submit-button,
+            .cancel {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-top">
+
+        <div class="brand">
+            <div class="brand-icon">BS</div>
+
+            <div>
+                <h1>BedStats</h1>
+                <p>Hospital Bed &amp; Patient Management System</p>
+            </div>
+        </div>
+
+    </div>
+
+    <nav>
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'bed_list' %}">
+            Beds
+        </a>
+
+        <a href="{% url 'patient_list' %}">
+            Patients
+        </a>
+
+        <a href="{% url 'admission_create' %}">
+            Admission
+        </a>
+
+        <a href="{% url 'discharge_create' %}" class="active">
+            Discharge
+        </a>
+
+        <a href="{% url 'transfer_create' %}">
+            Transfer
+        </a>
+
+        <a href="{% url 'reports' %}">
+            Reports
+        </a>
+
+        <form method="post"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+                Logout
+            </button>
+
+        </form>
+
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="page-heading">
+
+        <h2>Discharge Patient</h2>
+
+        <p>
+            Record the discharge of an admitted patient and release
+            the occupied hospital bed.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <div class="card-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <h3>Patient Discharge</h3>
+
+                <p>
+                    Complete the discharge information accurately.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            {% if error %}
+
+                <div class="error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="notice">
+
+                <div class="notice-icon">
+                    !
+                </div>
+
+                <div>
+                    <strong>Important:</strong>
+                    Confirm the correct admitted patient, discharge date,
+                    and reason before submitting. The patient's occupied
+                    bed will be released after a successful discharge.
+                </div>
+
+            </div>
+
+
+            <form method="post">
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label for="admission">
+
+                        Select Admitted Patient
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <select id="admission"
+                            name="admission"
+                            required>
+
+                        <option value="">
+                            Select Patient
+                        </option>
+
+                        {% for admission in admissions %}
+
+                            <option value="{{ admission.id }}">
+
+                                {{ admission.patient.patient_number }}
+                                -
+                                {{ admission.patient.first_name }}
+                                {{ admission.patient.last_name }}
+                                -
+                                Bed {{ admission.bed.bed_number }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <div class="form-help">
+                        Select the patient currently admitted for discharge.
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="discharge_date">
+
+                        Discharge Date
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <input type="date"
+                           id="discharge_date"
+                           name="discharge_date"
+                           required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="reason">
+
+                        Reason for Discharge
+
+                        <span class="required">*</span>
+
+                    </label>
+
+
+                    <select id="reason"
+                            name="reason"
+                            required>
+
+                        <option value="">
+                            Select Reason
+                        </option>
+
+                        <option value="Recovered">
+                            Recovered
+                        </option>
+
+                        <option value="Referred">
+                            Referred
+                        </option>
+
+                        <option value="Transferred">
+                            Transferred
+                        </option>
+
+                        <option value="Against Medical Advice">
+                            Against Medical Advice
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="remarks">
+                        Remarks
+                    </label>
+
+
+                    <textarea id="remarks"
+                              name="remarks"
+                              placeholder="Enter additional remarks"></textarea>
+
+
+                    <div class="form-help">
+                        Add any additional information relevant to the discharge.
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit"
+                            class="submit-button">
+
+                        Discharge Patient
+
+                    </button>
+
+
+                    <a href="{% url 'dashboard' %}"
+                       class="cancel">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    BedStats Hospital Management System &copy; 2026
+</footer>
+
+</body>
+</html>

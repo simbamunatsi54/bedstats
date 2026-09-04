@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bed Management - BedStats</title>
+
+    <style>
+        /* =========================================================
+           BEDSTATS PROFESSIONAL THEME
+           ========================================================= */
+
+        :root {
+            --navy: #123b5d;
+            --navy-dark: #0b2942;
+            --navy-light: #1d557d;
+
+            --teal: #0f766e;
+            --teal-dark: #0b5d57;
+            --teal-light: #e7f6f4;
+
+            --background: #f4f7fa;
+            --card: #ffffff;
+
+            --text: #243447;
+            --muted: #6b7c8f;
+
+            --border: #dce5ec;
+
+            --success: #198754;
+            --success-light: #e8f6ee;
+
+            --warning: #c98a00;
+            --warning-light: #fff5d9;
+
+            --danger: #c0392b;
+            --danger-light: #fdecea;
+
+            --info: #2878a8;
+            --info-light: #eaf4fa;
+
+            --neutral: #59636e;
+            --neutral-light: #eef1f4;
+
+            --shadow: 0 6px 20px rgba(18, 59, 93, 0.08);
+            --shadow-hover: 0 10px 28px rgba(18, 59, 93, 0.14);
+
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* =========================================================
+           HEADER
+           ========================================================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                var(--navy-dark),
+                var(--navy)
+            );
+            color: white;
+            padding: 24px 30px;
+            border-bottom: 4px solid var(--teal);
+        }
+
+        .header-container {
+            max-width: 1450px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        /* =========================================================
+           NAVIGATION
+           ========================================================= */
+
+        nav {
+            background: var(--navy-dark);
+            padding: 10px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1450px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.88);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background: var(--teal);
+            color: white;
+        }
+
+        /* Highlight Beds page */
+        nav a:nth-child(2) {
+            background: rgba(15, 118, 110, 0.28);
+            color: white;
+        }
+
+        .logout-button {
+            background: var(--danger);
+            color: white;
+            padding: 9px 16px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background: #a93226;
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           MAIN
+           ========================================================= */
+
+        main {
+            max-width: 1450px;
+            margin: 30px auto 50px;
+            padding: 0 20px;
+        }
+
+        .title {
+            margin-bottom: 28px;
+        }
+
+        .title h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        .title p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           BED SUMMARY
+           ========================================================= */
+
+        .bed-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .summary-value {
+            color: var(--navy);
+            font-size: 25px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+           MAIN SECTION
+           ========================================================= */
+
+        .section {
+            background: var(--card);
+            padding: 25px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: var(--navy);
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .section-description {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           TABLE
+           ========================================================= */
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 780px;
+        }
+
+        th {
+            background: var(--navy);
+            color: white;
+            padding: 14px 15px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text);
+            background: white;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover td {
+            background: #f7fafc;
+        }
+
+        .bed-number {
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .ward-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* =========================================================
+           STATUS BADGES
+           ========================================================= */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .available {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .occupied {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .reserved {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .cleaning {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .out-of-service {
+            background: var(--neutral-light);
+            color: var(--neutral);
+        }
+
+        /* =========================================================
+           STATUS UPDATE FORM
+           ========================================================= */
+
+        .status-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 290px;
+        }
+
+        select {
+            min-width: 185px;
+            padding: 9px 11px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+
+        select:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+        }
+
+        button.update-button {
+            padding: 9px 14px;
+            background: var(--teal);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        button.update-button:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+        .empty {
+            text-align: center;
+            padding: 35px !important;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        footer {
+            background: var(--navy-dark);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            font-size: 12px;
+            border-top: 3px solid var(--teal);
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        footer p:first-child {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .bed-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            header p {
+                font-size: 12px;
+            }
+
+            nav {
+                padding: 10px 12px;
+            }
+
+            nav a,
+            .logout-button {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            main {
+                margin-top: 25px;
+                padding: 0 12px;
+            }
+
+            .title h2 {
+                font-size: 24px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+            .section-header {
+                align-items: flex-start;
+            }
+
+            .status-form {
+                min-width: 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .bed-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .status-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            select,
+            button.update-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header>
+
+    <div class="header-container">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                BS
+            </div>
+
+            <div>
+
+                <h1>
+                    BedStats
+                </h1>
+
+                <p>
+                    Hospital Bed Management &amp; Statistics System
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+
+<nav>
+
+    <div class="nav-container">
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/beds/">
+            Beds
+        </a>
+
+        <a href="/patients/">
+            Patients
+        </a>
+
+        <a href="/patients/register/">
+            Register Patient
+        </a>
+
+        <a href="/admissions/new/">
+            Admission
+        </a>
+
+        <a href="/discharges/new/">
+            Discharge
+        </a>
+
+        <a href="/transfers/new/">
+            Transfer
+        </a>
+
+        <a href="/reports/">
+            Reports
+        </a>
+
+        <a href="/admin/">
+            Administration
+        </a>
+
+        <form method="post"
+              action="{% url 'logout' %}"
+              style="display:inline;">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<main>
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="title">
+
+        <h2>
+            Bed Management
+        </h2>
+
+        <p>
+            View and manage the current status of hospital beds.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         BED MANAGEMENT SECTION
+         ===================================================== -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Hospital Beds
+                </h2>
+
+                <p class="section-description">
+                    Monitor bed availability and update bed status when required.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Bed Number
+                        </th>
+
+                        <th>
+                            Ward
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Change Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for bed in beds %}
+
+                    <tr>
+
+
+                        <!-- BED NUMBER -->
+
+                        <td>
+
+                            <span class="bed-number">
+                                {{ bed.bed_number }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- WARD -->
+
+                        <td>
+
+                            <span class="ward-name">
+                                {{ bed.ward.name }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- CURRENT STATUS -->
+
+                        <td>
+
+                            {% if bed.status == "Available" %}
+
+                                <span class="status available">
+                                    Available
+                                </span>
+
+                            {% elif bed.status == "Occupied" %}
+
+                                <span class="status occupied">
+                                    Occupied
+                                </span>
+
+                            {% elif bed.status == "Reserved" %}
+
+                                <span class="status reserved">
+                                    Reserved
+                                </span>
+
+                            {% elif bed.status == "Cleaning" %}
+
+                                <span class="status cleaning">
+                                    Cleaning
+                                </span>
+
+                            {% elif bed.status == "Out of Service" %}
+
+                                <span class="status out-of-service">
+                                    Out of Service
+                                </span>
+
+                            {% else %}
+
+                                <span class="status">
+                                    {{ bed.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CHANGE STATUS -->
+
+                        <td>
+
+                            <form method="post"
+                                  action="{% url 'change_bed_status' bed.id %}"
+                                  class="status-form">
+
+                                {% csrf_token %}
+
+                                <select name="status">
+
+                                    <option value="Available">
+                                        Available
+                                    </option>
+
+                                    <option value="Occupied">
+                                        Occupied
+                                    </option>
+
+                                    <option value="Reserved">
+                                        Reserved
+                                    </option>
+
+                                    <option value="Cleaning">
+                                        Cleaning
+                                    </option>
+
+                                    <option value="Out of Service">
+                                        Out of Service
+                                    </option>
+
+                                </select>
+
+                                <button type="submit"
+                                        class="update-button">
+                                    Update
+                                </button>
+
+                            </form>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="empty">
+
+                            No beds found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer>
+
+    <p>
+        BedStats Hospital Bed Management System
+    </p>
+
+    <p>
+        Hospital Bed Statistics &amp; Patient Movement
+    </p>
+
+</footer>
+
+
+</body>
+</html>
